@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0px;
+        padding: 0px;
+      }
+      #box {
+        position: relative;
+        float: left;
+      }
+      #toBig {
+        width: 80px;
+        height: 80px;
+        border: 1px solid gray;
+        background-color: transparent;
+        position: absolute;
+      }
+      #beBig {
+        float: left;
+        overflow: hidden;
+        border: 1px solid gray;
+        position: relative;
+        left: 40px;
+        top: 325px;
+        width: 600px;
+        height: 600px;
+      }
+      #bigImg {
+        position: absolute;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="box">
+      <!-- toBig是放大镜元素 -->
+      <div id="toBig"></div>
+      <!-- 小图片 -->
+      <img src="./狗头.jpg" id="smallImg" width="400px" />
+    </div>
+    <div id="beBig">
+      <!-- 大图片,比例为1.5倍数 -->
+      <img src="./狗头.jpg" id="bigImg" width="600px" />
+    </div>
+    <script type="text/javascript">
+      //获取小图片,大图片,放大镜元素,大图片的父元素
+      var smallImg = document.querySelector("#smallImg");
+      var bigImg = document.querySelector("#bigImg");
+      var toBig = document.querySelector("#toBig");
+      var beBig = document.querySelector("#beBig");
+
+      /*在页面加载时就先计算出小图片与大图片的比例*/
+      var q = 0;
+      window.onload = function () {
+        q = bigImg.offsetWidth / smallImg.offsetWidth;
+        //根据放大镜的宽高和比例计算要显示放大内容的大小
+        // beBig.style.width = toBig.clientWidth * q + "px";
+        // beBig.style.height = toBig.clientHeight * q + "px";
+      };
+      //获取放大镜元素的中心，保证鼠标在放大镜中心
+      var xCenter = toBig.clientWidth / 2;
+      var yCenter = toBig.clientHeight / 2;
+
+      //flag是一个标志,当鼠标按下时为true,可以进行移动
+      flag = false;
+      toBig.onmousedown = function () {
+        flag = true;
+      };
+      toBig.onmouseup = function () {
+        flag = false;
+      };
+
+      window.onmousemove = function (ev) {
+        var ev = ev || window.event;
+        //flag为true时,放大镜元素被按下并可以进行拖动
+        if (flag) {
+          //获取鼠标当前所在位置并计算除了元素自身外要移动的位置
+          var mouseX = ev.clientX,
+            mouseY = ev.clientY;
+          var trueX = mouseX - xCenter;
+
+          //判断放大镜元素是否超出小图片范围
+          if (trueX < smallImg.offsetLeft) {
+            trueX = smallImg.offsetLeft;
+          }
+          if (trueX > smallImg.clientWidth - toBig.offsetWidth) {
+            trueX = smallImg.clientWidth - toBig.offsetWidth;
+          }
+          var trueY = mouseY - yCenter;
+          if (trueY <= smallImg.offsetTop) {
+            trueY = smallImg.offsetTop;
+          }
+          if (trueY > smallImg.clientHeight - toBig.offsetHeight) {
+            trueY = smallImg.clientHeight - toBig.offsetHeight;
+          }
+
+          //小图片移动
+          toBig.style.left = trueX + "px";
+          toBig.style.top = trueY + "px";
+          console.log(trueX, trueY);
+
+          // 大图片要移动的位置
+
+          bigImg.style.left = -(trueX * q) + "px";
+          bigImg.style.top = -(trueY * q) + "px";
+        }
+      };
+    </script>
+  </body>
+</html>

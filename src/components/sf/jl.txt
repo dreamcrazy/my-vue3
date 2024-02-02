@@ -1,0 +1,29 @@
+响应式：通过Object.defineProperty方法对data里的数据进行拦截，
+在get时收集依赖Watcher进deps里，set时由deps通知watcher调用update方法进行页面更新。
+
+
+1、把template通过compileToFunction转换成render函数，赋值给render函数。
+ 1.1 通过parse方法把template转化成AST语法树，用来描述dom结构，包括js、css等
+  let ast = parse(template)
+ 1.2 通过genrate函数把ast语法树转化成render函数需要的格式代码
+ 1.3 最后返回render函数
+
+// 把上面生成的AST传入generate函数中
+// 生成一个render格式的函数代码
+// 格式大概是类似_c('div',{id:"app"},_c('div',undefined,_v("hello"+_s(name)),_c('span',undefined,_v("world"))))
+// _c代表创建元素，_v代表创建文本，_s代表文Json.stringify--把对象解析成文本
+let code = generate(ast)
+
+渲染
+
+render函数执行，生成虚拟dom，执行patch函数，把虚拟dom转化成真实dom并渲染，
+
+Dep
+每个对象都有自己的dep let dep = new Dep()
+
+http是超文本协议，传递数据是以文本的形式进行，并且他也是无状态的，通常需要配合cookie等来做关联请求。
+不同： 1、更安全，https比http更安全，通常用ssl\tls做加密
+       2、端口不同 http 80端口 http 443默认
+       3、连接方式不同 http tcp三次握手四次挥手 http三次握手+数字证书
+
+       
