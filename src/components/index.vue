@@ -67,8 +67,8 @@ export default defineComponent({
         console.log(err);
       })
     }
-    getInfo()
-    getVisit()
+    // getInfo()
+    // getVisit()
 
     return {
       toInput,

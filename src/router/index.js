@@ -16,6 +16,7 @@ import yanzheng from "@/components/demo/拖拽验证.vue";
 import tuoxiaoqiu from "@/components/demo/拖小球.vue";
 import fanzhuanCard from "@/components/demo/翻转crad.vue";
 import testCmp from "@/components/testCmp.vue";
+import bingfa from "@/components/demo/请求并发限制.vue";
 
 export const routes = [
   {
@@ -115,7 +116,15 @@ export const routes = [
     }
   },
   {
-    path: "/test/:id",
+    path: "/bingfa",
+    name: "bingfa",
+    component: bingfa,
+    meta:{
+      title:'请求并发限制'
+    }
+  },
+  {
+    path: "/test/:id?",
     name: "test",
     component: testCmp,
     meta:{
