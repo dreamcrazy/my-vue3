@@ -11,14 +11,11 @@
         <input type="text" v-model="limit">
         <button @click="sendRequest">发送</button>
         <button @click="addTask">添加1个任务</button>
-        <Test number="10"></Test>
     </div>
 </template>
 
 <script setup>
-import { computed, reactive, ref, toRefs, watch } from 'vue'
-import './test'
-import Test from './test.vue'
+import { reactive, ref, toRefs } from 'vue'
 const limit = ref(3)
 
 const requestFn = (index,time = 1) => {
@@ -53,42 +50,44 @@ const state = reactive({
     resultList:[]
 })
 const sendRequest = () => {
-    const rList = []
-    const wList = []
-    console.time('task')
-    const walk = fn => {
-        fn().then(res => {
-            state.resultList.push(res)
-        }).catch(err => {
-            state.resultList.push(err)
-        }).finally(() => {
-            rList.shift()
-            if(wList.length && rList.length < limit.value) {
-                let fn = wList.shift()
-                rList.push(fn)
-                walk(fn)
-            }
-            if(!wList.length && !rList.length) {
-                console.log('全部完成');
-                console.timeEnd('task')
-            }
-        })
+    console.time('aaa')
+    let rList = state.requestList
+
+    let currentCount = 0
+
+    const run = () => {
+        let fn = rList.shift()
+        fn && runner(fn)
     }
-    state.requestList.forEach(fn => {
-        if(rList.length < limit.value) {
-            rList.push(fn)
-            walk(fn)
-        } else {
-            wList.push(fn)
+
+    const runner = async fn => {
+        try {
+            currentCount++
+            const result = await fn()
+            state.resultList.push(result)
+        } catch (err) {
+            state.resultList.push(err)
+        } finally {
+            currentCount--
+            console.log('执行完毕', currentCount);
+            picker()
         }
-    })
+    }
 
-    const requestListStr = computed(() => JSON.stringify(state.requestList))
-
-    watch(requestListStr,(newVal,oldVal) => {
-        console.log(newVal);
-        console.log(oldVal);
-    })
+    const picker = () => {
+        console.log(rList.length, currentCount);
+        if (rList.length == 0 && currentCount == 0) {
+            console.log('全部执行结束');
+            console.timeEnd('aaa')
+        } else if (currentCount < limit.value && rList.length) {
+            run()
+        }
+    }
+    let i = 0
+    while (i < limit.value) {
+        i++
+        run()
+    }
 
 }
 

@@ -18,3 +18,25 @@ const fn = (arr) => {
 };
 const newArr = fn(arr);
 console.log(newArr);
+
+function compare(a, b) {
+  if (a > b) return true;
+  return false;
+}
+
+function exchange(arr, a, b) {
+  var temp = arr[a];
+  arr[a] = arr[b];
+  arr[b] = temp;
+}
+// maopao
+function sort(arr) {
+  for (var j = 0; j < arr.length; j++) {
+    for (var i = 0; i < arr.length - 1 - j; i++) {
+      if (compare(arr[i], arr[i + 1])) {
+        exchange(arr, i, i + 1);
+      }
+    }
+  }
+}
+sort(arr)
