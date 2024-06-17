@@ -21,6 +21,8 @@
   const activeIndex = ref(-1)
   const router = useRouter()
 
+  console.log(1);
+
   const toggle = ref(true)
 
   const toToggle = () => {
