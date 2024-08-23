@@ -23,6 +23,10 @@
       第二次便是10.1版本，被动移速被下调至全等级3%，后期直接少了几十点移速，对铁男这种“笨比”英雄来说无疑是致命打击，并且设计师还略带嘲讽地说了一句：我们削弱了铁男的被动，好让你更容易风筝他。这波改动过后，铁男的胜率直接下降了近2%，登场率也是一路下滑再也没有回升过。
     </p>
     <input type="text" @input="toInput">
+    <p>
+      indexStore.age: {{ indexStore.age }}
+      <button @click="handleChangeAge">修改age</button>
+    </p>
   </div>
 </template>
 <script lang="js" type="text/javascript">
@@ -30,8 +34,10 @@
 import './test/class-extends'
 import { getVteInfo,getVisitCount } from '../request/api'
 import { defineComponent } from 'vue';
+import { useIndexStore } from '../store/indexStore';
 export default defineComponent({
   setup() {
+    const indexStore = useIndexStore()
     function debounce(fn, delay = 500) {
       //记录上一次的延时器
       var timer = null;
@@ -67,13 +73,21 @@ export default defineComponent({
         console.log(err);
       })
     }
+
+    const handleChangeAge = () => {
+      indexStore.changeAge(++indexStore.age)
+    }
+
+    
     // getInfo()
     // getVisit()
 
     return {
       toInput,
       getInfo,
-      getVisit
+      getVisit,
+      indexStore,
+      handleChangeAge
     };
   }
 })

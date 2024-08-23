@@ -17,6 +17,7 @@ import tuoxiaoqiu from "@/components/demo/拖小球.vue";
 import fanzhuanCard from "@/components/demo/翻转crad.vue";
 import testCmp from "@/components/testCmp.vue";
 import bingfa from "@/components/demo/请求并发限制.vue";
+import masaike from "@/components/demo/马赛克图片.vue";
 
 export const routes = [
   {
@@ -129,6 +130,14 @@ export const routes = [
     component: testCmp,
     meta:{
       title:'测试动态'
+    }
+  },
+  {
+    path: "/masaike",
+    name: "masaike",
+    component: masaike,
+    meta:{
+      title:'马赛克图片'
     }
   },
 //   {
